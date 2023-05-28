@@ -1,9 +1,16 @@
-import {Action, ActionPanel, Detail, getPreferenceValues, showToast, Toast} from "@raycast/api";
+import {
+  Action,
+  ActionPanel,
+  Detail,
+  getPreferenceValues,
+  showToast,
+  Toast,
+} from "@raycast/api";
 import Preferences from "./types/Preferences";
 import ErrorMessage from "./components/ErrorMessage";
-import {result, statusLine} from "./helpers/common";
-import {isNaN, toNumber} from "lodash";
-import {useEffect, useState} from "react";
+import { result, statusLine } from "./helpers/common";
+import { isNaN, toNumber } from "lodash";
+import { useEffect, useState } from "react";
 import Style = Toast.Style;
 
 export default function Command() {
@@ -23,7 +30,7 @@ To obtain the Toggl user token: Left sidebar -> Profile -> [Profile settings](ht
 `;
   }
 
-  if (isNaN(hourRate) || isNaN(targetHours)){
+  if (isNaN(hourRate) || isNaN(targetHours)) {
     errorMessage = `
 ## Hour rate and target hours must be a number
   
@@ -47,7 +54,7 @@ By Estonian laws the hour rate cannot be less than 4.3 €/hour and 725 €/mont
   }
 
   interface State {
-    markdown: string|undefined;
+    markdown: string | undefined;
     isLoading?: boolean;
   }
 
@@ -63,29 +70,30 @@ By Estonian laws the hour rate cannot be less than 4.3 €/hour and 725 €/mont
     } catch (error) {
       setState({
         markdown: `ERROR ${error}`,
-        isLoading: false
+        isLoading: false,
       });
       await showToast({ title: "Something went wrong", style: Style.Failure });
-      console.log("Error", error)
+      console.log("Error", error);
     }
-  }
+  };
 
   useEffect(() => {
     fetchData();
   }, []);
 
   return (
-      <Detail
-          isLoading={state?.isLoading}
-          markdown={state?.markdown}
-          metadata={
-            statusLine()
-          }
-          actions={
-            <ActionPanel>
-              <Action.SubmitForm title="Refresh" onSubmit={async () => await fetchData()} />
-            </ActionPanel>
-          }
-      />
+    <Detail
+      isLoading={state?.isLoading}
+      markdown={state?.markdown}
+      metadata={statusLine()}
+      actions={
+        <ActionPanel>
+          <Action.SubmitForm
+            title="Refresh"
+            onSubmit={async () => await fetchData()}
+          />
+        </ActionPanel>
+      }
+    />
   );
 }
