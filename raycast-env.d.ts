@@ -14,7 +14,14 @@ declare type Preferences = ExtensionPreferences
 
 declare namespace Preferences {
   /** Preferences accessible in the `index` command */
-  export type Index = ExtensionPreferences & {}
+  export type Index = ExtensionPreferences & {
+  /** Your personal toggl token - Your personal toggl api-token */
+  "togglApiKey"?: string,
+  /** Target hours - Amount of hours you plan to work this month */
+  "targetHours": string,
+  /** Hourly brutto rate - Amount of € you earn per/hour in brutto */
+  "hourRate": string
+}
 }
 
 declare namespace Arguments {
