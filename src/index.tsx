@@ -1,9 +1,10 @@
-import {Action, ActionPanel, Detail, getPreferenceValues, openExtensionPreferences} from "@raycast/api";
+import {Action, ActionPanel, Detail, getPreferenceValues, showToast, Toast} from "@raycast/api";
 import Preferences from "./types/Preferences";
 import ErrorMessage from "./components/ErrorMessage";
 import {result, statusLine} from "./helpers/common";
 import {isNaN, toNumber} from "lodash";
 import {useEffect, useState} from "react";
+import Style = Toast.Style;
 
 export default function Command() {
   const preferences = getPreferenceValues<Preferences>();
@@ -46,7 +47,7 @@ By Estonian laws the hour rate cannot be less than 4.3 €/hour and 725 €/mont
   }
 
   interface State {
-    markdown: string;
+    markdown: string|undefined;
     isLoading?: boolean;
   }
 
@@ -54,14 +55,17 @@ By Estonian laws the hour rate cannot be less than 4.3 €/hour and 725 €/mont
 
   const fetchData = async () => {
     try {
-      setState({ markdown: `Loading...`, isLoading: true });
+      setState({ markdown: state?.markdown, isLoading: true });
+      await showToast({ title: "Making a request...", style: Style.Animated });
       const markdown = await result(hourRate, targetHours);
       setState({ markdown, isLoading: false });
+      await showToast({ title: "Loaded successfully", style: Style.Success });
     } catch (error) {
       setState({
         markdown: `ERROR ${error}`,
         isLoading: false
       });
+      await showToast({ title: "Something went wrong", style: Style.Failure });
       console.log("Error", error)
     }
   }
