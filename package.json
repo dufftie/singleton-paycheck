@@ -14,7 +14,9 @@
       "mode": "view",
       "icon": "command-icon.png",
       "author": "dufftie",
-      "categories": "utils",
+      "categories": [
+        "Finance", "Productivity"
+      ],
       "commands": "paycheck",
       "contributors": "Artjom Dmitrijev & Silver-Stan Kruus",
       "preferences": [
